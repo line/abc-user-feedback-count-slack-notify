@@ -1,0 +1,52 @@
+# Copyright 2024 LY Corporation
+#
+# LY Corporation licenses this file to you under the Apache License,
+# version 2.0 (the "License"); you may not use this file except in compliance
+# with the License. You may obtain a copy of the License at:
+#
+#     https://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
+# WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
+# License for the specific language governing permissions and limitations
+# under the License.
+name: Run Handler
+
+on:
+  workflow_dispatch:
+  #schedule: # The settings in the github action are based on UTC.
+  #  - cron: '* 1 * * *'
+
+jobs:
+  run-script:
+    runs-on: [ ubuntu-latest ]
+
+    steps:
+      - name: Check out the repository
+        uses: actions/checkout@v2
+
+      - name: Set up Python
+        uses: actions/setup-python@v2
+        with:
+          python-version: '3.9.0'
+
+      - name: Set environment variables
+        run: |
+          echo "AUF_SEARCH_API=https://{ABC UserFeedback Domain in use}/api/projects/{projectId}/channels/{channelId}/feedbacks/search" >> $GITHUB_ENV
+          echo "AUF_URL=https://{ABC UserFeedback Domain in use}" >> $GITHUB_ENV
+          echo "QUERY_SEARCH_TEXT_KEYS={}" >> $GITHUB_ENV
+          echo "QUERY_SEARCH_TEXT_VALUES={}" >> $GITHUB_ENV
+          echo "QUERY_SEARCH_INTERVAL_DAYS=1" >> $GITHUB_ENV
+          echo "IGNORE_WHEN_NOTHING=false" >> $GITHUB_ENV
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r user-feedback-count-slack-notification/requirements.txt
+
+      - name: Run Python script
+        env:
+          AUF_API_KEY: ${{ secrets.AUF_API_KEY }}
+          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
+        run: python user-feedback-count-slack-notification/run_handler.py
