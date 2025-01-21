@@ -1,16 +1,16 @@
 # ABC User Feedback Count Notification
-
+![](.README_images/ufb-slack-notify-main.png)
 ABC User Feedback Count Notification provides functionality to send notifications to Slack regarding the number of user feedbacks collected via [ABC User Feedback](https://github.com/line/abc-user-feedback). 
 
 This enables more efficient response to feedback collected from customers.  
 
 **Screenshot**  
 
-![](.README_images/27690cef.png)
+![](.README_images/slack-message-screenshot.png)
 
 ## Architecture
 If you're using Github Actions, your configuration would look like this
-![](.README_images/0b50108f.png)
+![](.README_images/architecture.png)
 
 ## Usage
 
@@ -77,13 +77,13 @@ You can use the following environment variables to change Slack notifications.
 | AUF_API_KEY                | API key used to authenticate requests to the ABC UserFeedback API.<br/><br/>It can be obtained from your ABC UserFeedback settings.                                                                    |    O     |               |                                                                               |
 | SLACK_WEBHOOK_URL          | The webhook URL for sending messages to a Slack channel.<br/><br/> This URL is used to post feedback notifications to Slack.                                                                           |    O     |               | https://hooks.slack.com/services/T00000000/B00000000/XXXXXXXXXXXXXXXXXXXXXXXX ||
 | AUF_URL                    | Service The link to the URL of the ABC UserFeedback you are accessing.                                                                                                                                 |    X     |               | https://example.com                                                           |
-| QUERY_SEARCH_TEXT_KEYS     | A comma-separated string of keys used in the feedback query.<br/><br/> These keys correspond to the fields in the feedback data that you want to filter by.                                            |    X     |               | categoryDepth1<br/>![](.README_images/92c5c332.png)                           |
+| QUERY_SEARCH_TEXT_KEYS     | A comma-separated string of keys used in the feedback query.<br/><br/> These keys correspond to the fields in the feedback data that you want to filter by.                                            |    X     |               | categoryDepth1<br/>![](.README_images/description-query-search-text-keys.png) |
 | QUERY_SEARCH_TEXT_VALUES   | A comma-separated string of values corresponding to `QUERY_SEARCH_TEXT_KEYS`.<br/><br/> Each value is used to filter the feedback data based on the corresponding key.                                 |    X     |               | error                                                                         |
 | QUERY_SEARCH_INTERVAL_DAYS | An integer specifying the number of days to look back from today when querying feedback data.<br/><br/>  For example, setting it to `3` will query feedback data for the last 3 days, excluding today. |    X     |       1       | 1                                                                             |
 | IGNORE_WHEN_NOTHING        | Sets whether to send a Slack notification if no feedback is registered for the period of time set in `QUERY_SEARCH_INTERVAL_DAYS`. `true` : Do not send notifications, `false` : Send notifications    |    X     |     false     | true                                                                          |
 
 Below screenshot help you visualize message part controlled by different variables:
-![](.README_images/92142909.png)
+![](.README_images/description-slack-message-content.png)
 
 ## License
 
